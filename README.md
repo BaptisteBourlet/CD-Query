@@ -1,11 +1,11 @@
 # CD-Query
 CD Query
 
-###Installation
+### Installation
 
 *npm install*
 
-###Run the app
+### Run the app
 
 - add DB_credentials.js file to root folder
 - add DB and export it using: 
