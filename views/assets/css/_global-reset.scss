@@ -23,6 +23,12 @@
          margin-right: 0;
       }
 
+      .edit, .delete {
+         &:hover {
+            cursor: pointer;
+         }
+      }
+
       .tool-bar {
          height: 2.5rem;
          background-color: white;
@@ -40,6 +46,24 @@
             border-radius: 3px;
             color: #ddb892;
             margin-left: 1rem;
+         }
+
+         .search-wrapper {
+            margin-left: 1rem;
+            border: 2px solid #ddb892;
+            border-radius: 3px;
+            color: #ddb892;
+            i {
+               margin-left: .5rem;
+            }
+            input {
+               border: none;
+               font-style: italic;
+            }
+
+            input:focus {
+               outline: none;
+            }
          }
       }
    }

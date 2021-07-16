@@ -20,6 +20,10 @@
   margin-right: 0;
 }
 
+* main .edit:hover, * main .delete:hover {
+  cursor: pointer;
+}
+
 * main .tool-bar {
   height: 2.5rem;
   background-color: white;
@@ -50,6 +54,26 @@
   border-radius: 3px;
   color: #ddb892;
   margin-left: 1rem;
+}
+
+* main .tool-bar .search-wrapper {
+  margin-left: 1rem;
+  border: 2px solid #ddb892;
+  border-radius: 3px;
+  color: #ddb892;
+}
+
+* main .tool-bar .search-wrapper i {
+  margin-left: .5rem;
+}
+
+* main .tool-bar .search-wrapper input {
+  border: none;
+  font-style: italic;
+}
+
+* main .tool-bar .search-wrapper input:focus {
+  outline: none;
 }
 
 body {

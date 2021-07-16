@@ -88,7 +88,7 @@ exports.editReport = async (req, res) => {
 
    try {
       let result = await client.query(editQuery);
-
+      
       if (result.rowCount === 1) {
          console.log('ok');
          res.status(200).send('Report edited successfully');
@@ -121,6 +121,21 @@ exports.deleteReport = async (req, res) => {
       res.status(500).send('unable to delete Report');
       console.log(err)
    }
+}
+
+
+exports.searchReport = async (req, res) => {
+   const { searchText } = req.body;
+   console.log(req.body)
+   const searchQuery = {
+      text: 'SELECT "ReportName", "description" FROM "Reports" WHERE "ReportName" ILIKE  $1',
+      values: [`%${searchText}%`]
+   }
+
+   let results = await client.query(searchQuery);
+   let finalResults = results.rows;
+
+   res.status(200).send({ finalResults })
 }
 
 
@@ -199,6 +214,37 @@ exports.deleteUserGroup = async (req, res) => {
    res.send('the hell')
 }
 
+
+exports.searchUserGroup = async (req, res) => {
+   const { UserGroup } = req.body;
+
+   const searchQuery = {
+      text: 'SELECT * FROM "UserGroup" WHERE "UserGroup" ILIKE $1;',
+      values: [`%${UserGroup}%`]
+   }
+
+   let results = await client.query(searchQuery);
+
+   let finalResults = results.rows;
+
+   res.status(200).send({finalResults});
+}
+
+
+exports.searchUserGroupLink = async (req, res) => {
+   const { UserGroup } = req.body;
+
+   const searchQuery = {
+      text: 'SELECT * FROM "GroupReportLink" WHERE "UserGroup" ILIKE $1;',
+      values: [`%${UserGroup}%`]
+   }
+
+   let results = await client.query(searchQuery);
+
+   let finalResults = results.rows;
+
+   res.status(200).send({finalResults});
+}
 
 
 // =======================================================

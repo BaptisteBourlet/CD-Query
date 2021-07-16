@@ -38,7 +38,6 @@ exports.ReportEdit = async (req, res) => {
 
    let result = await client.query(query)
    let finalResult = result.rows[0];
-
    res.render('./reports/edit', { finalResult });
 }
 

@@ -4,7 +4,6 @@ const handleChange = (event) => {
    document.getElementById('response-message').classList.remove('error');
 }
 
-
 const handleSubmit = async (event) => {
    event.preventDefault();
    let UserGroup = document.getElementById('UserGroup').value;
@@ -122,87 +121,82 @@ const handleEditSubmit = async (event) => {
 }
 
 
-// (() => {
-//    let deleteBtn = document.getElementsByClassName('delete');
-//    Array.from(deleteBtn).forEach(btn => {
-//       btn.addEventListener('click', () => {
-//          let submitData = {};
-//          let dataArray = btn.parentElement.getAttribute('data').split('-');
 
-//          submitData.UserGroup = dataArray[0];
-//          submitData.ReportID = dataArray[1];
+const handleEdit = (event) => {
+   let dataArray = event.target.parentElement.parentElement.getAttribute('data').split('-');
 
-//          fetch('/api/deleteGroupReport', {
-//             headers: {
-//                'Content-Type': 'application/json'
-//             },
-//             method: "POST",
-//             body: JSON.stringify(submitData)
-//          }).then(response => {
-//             location.reload();
-//          }).catch(err => { console.error(err) })
-//       })
-//    })
-// })();
+   sessionStorage.setItem('oldReportID', dataArray[1]);
+
+   location.href = `/view/user-group-link-edit?UserGroup=${dataArray[0]}&ReportID=${dataArray[1]}`;
+}
 
 
-(() => {
-   let editBtn = document.getElementsByClassName('edit');
+const handleDelete = (event) => {
+   document.getElementById('modal').style.display = 'flex';
 
-   Array.from(editBtn).forEach(btn => {
-      btn.addEventListener('click', () => {
-         let dataArray = btn.parentElement.getAttribute('data').split('-');
-         sessionStorage.setItem('oldReportID', dataArray[1]);
-         btn.href = `/view/user-group-link-edit?UserGroup=${dataArray[0]}&ReportID=${dataArray[1]}`;
-      })
-   })
-})();
+   let dataStr = event.target.parentElement.parentElement.getAttribute('data');
+
+   localStorage.setItem('data', dataStr);
+}
 
 
+const handleCancel = () => {
+   document.getElementById('modal').style.display = 'none';
 
-(() => {
-   let deleteBtn = document.getElementsByClassName('delete');
-   Array.from(deleteBtn).forEach(btn => {
-      btn.addEventListener('click', () => {
-
-         document.getElementById('modal').style.display = 'flex';
-
-         let dataStr = btn.parentElement.getAttribute('data');
-
-         localStorage.setItem('data', dataStr);
-
-      })
-   })
-})();
-
-(() => {
-   let cancelBtn = document.getElementsByClassName('btn-cancel')[0];
-
-   cancelBtn.addEventListener('click', () => {
-      document.getElementById('modal').style.display = 'none';
-
-      localStorage.removeItem('data');
-   })
-})();
+   localStorage.removeItem('ReportName');
+}
 
 
-(() => {
-   let yesBtn = document.getElementsByClassName('btn-yes')[0];
-   yesBtn.addEventListener('click', () => {
-      let dataArray = localStorage.getItem('data').split('-');
-      let submitData = {};
-      submitData.UserGroup = dataArray[0];
-      submitData.ReportID = dataArray[1];
+const handleYes = () => {
+   let dataArray = localStorage.getItem('data').split('-');
+   let submitData = {};
+   submitData.UserGroup = dataArray[0];
+   submitData.ReportID = dataArray[1];
 
 
-      fetch('/api/deleteGroupReport', {
+   fetch('/api/deleteGroupReport', {
+      headers: {
+         'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify(submitData)
+   }).then(response => {
+      location.reload();
+   }).catch(err => { console.error(err) })
+}
+
+
+const handleSearch = async (event) => {
+   if (event.key === "Enter") {
+      let html = '';
+      let UserGroup = event.target.value;
+
+      let response = await fetch('/api/searchUserGroupLink', {
          headers: {
             'Content-Type': 'application/json'
          },
          method: "POST",
-         body: JSON.stringify(submitData)
-      }).then(response => {
-         location.reload();
-      }).catch(err => { console.error(err) })
-   })
-})();
+         body: JSON.stringify({ UserGroup })
+      });
+
+      let data = await response.json()
+
+      data.finalResults.forEach(res => {
+         html += ` <div class="item row">
+         <div data="${res.UserGroup}-${res.Report}" class="row col-1 pt-2 pb-2">
+            <a onclick="handleEdit(event)" class="edit col-6 text-center edit"><i class="fas fa-edit"></i></a>
+            <div onclick="handleDelete(event)" class="delete col-6 text-center delete"><i class="far fa-trash-alt"></i></div>
+         </div>
+         <div class="col-1 pt-2 pb-2 text-center">
+         ${res.UserGroup}
+         </div>
+         <div class="col-3 pt-2 pb-2 text-center">
+         ${res.Report}
+         </div>
+      </div>`
+      })
+
+      document.getElementById('res').remove();
+      document.getElementById('results').insertAdjacentHTML('beforeend', `<div id="res">${html}</div>`);
+   }
+}
