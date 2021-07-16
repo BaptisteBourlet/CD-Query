@@ -8,78 +8,19 @@
    <!-- CSS only -->
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   <link rel="stylesheet" href="../assets/css/reports.css">
 
-   <%- include('../styles.ejs') -%>
-      <title>add new Reports</title>
-
-
-      <script>
-         const handleChange = (event) => {
-            document.getElementById('response-message').textContent = '';
-            document.getElementById('response-message').classList.remove('success');
-            document.getElementById('response-message').classList.remove('error');
-         }
-
-
-         const handleSubmit = async (event) => {
-            event.preventDefault();
-            let reportName = document.getElementById('ReportName').value;
-            let reportForm = document.getElementById('reportForm');
-            let formData = new FormData(reportForm);
-            let submitData = {};
-            for (let [key, value] of formData) {
-               submitData[key] = value;
-            }
-
-            if (reportName) {
-               try {
-                  let response = await fetch('/api/addReport', {
-                     headers: {
-                        'Content-Type': 'application/json'
-                     },
-                     method: "POST",
-                     body: JSON.stringify(submitData)
-                  })
-
-                  document.getElementById('reportForm').classList.remove("was-validated");
-
-                  if (response.status === 200) {
-                     Object.keys(submitData).forEach(key => {
-                        document.getElementById(key).value = '';
-                     })
-
-                     document.getElementById('response-message').classList.remove('error');
-                     document.getElementById('response-message').classList.add('success');
-                     document.getElementById('response-message').textContent = `Report ${reportName} has been added successfully`;
-                  } else {
-                     document.getElementById('response-message').classList.remove('success');
-                     document.getElementById('response-message').classList.add('error');
-                     document.getElementById('response-message').textContent = `Attempt to add report failed, please contact your IT team`;
-                  }
-               } catch (err) {
-                  document.getElementById('response-message').classList.remove('success');
-                  document.getElementById('response-message').classList.add('error');
-                  document.getElementById('response-message').textContent = `Attempt to add report failed, please contact your IT team`;
-               }
-            } else {
-               window.scrollTo(0, 0);
-               document.getElementById('response-message').textContent = '';
-               document.getElementById('response-message').classList.remove('success');
-               document.getElementById('response-message').classList.remove('error');
-               document.getElementById('reportForm').classList.add("was-validated");
-            }
-         }
-      </script>
+   <title>add new Reports</title>
 </head>
 
 <body>
-   <header>
+   <header class="container">
       <%- include('../nav-bar.ejs') -%>
    </header>
 
-   <main>
-      <div class="heading">
-         <h1 class="col-4 offset-4 text-center mt-5 mb-5">Add Reports</h1>
+   <main class="container">
+      <div class="row heading">
+         <h1 class="text-center">Add Report</h1>
       </div>
 
       <form class="row needs-validation" id="reportForm" novalidate>
@@ -96,8 +37,8 @@
          </div>
          <div class="col-2  offset-3 mb-3">
             <label for="dropdown1" class="form-label">dropdown 1</label>
-            <input type="text" name="dropdown1" class="form-control" id="dropdown1">
-         </div>
+            <input type="text" name="dropdown1" value="test drop 1" class="form-control" id="dropdown1">
+         </div> 
          <div class="col-2 mb-3">
             <label for="dropdown2" class="form-label">dropdown 2</label>
             <input type="text" name="dropdown2" class="form-control" id="dropdown2">
@@ -109,7 +50,8 @@
 
          <div class="col-2  offset-3 mb-3">
             <label for="dropdown1value" class="form-label">dropdown 1 value</label>
-            <input type="text" name="dropdown1value" class="form-control" id="dropdown1value">
+            <input type="text" name="dropdown1value" value="test drop 1 value" class="form-control" id="dropdown1value"
+               required>
          </div>
          <div class="col-2 mb-3">
             <label for="dropdown2value" class="form-label">dropdown 2 value</label>
@@ -124,23 +66,24 @@
 
          <div class="col-6 offset-3 mb-3">
             <label for="query1" class="form-label">Query 1</label>
-            <textarea type="text" name="query1" class="form-control" id="query1"> </textarea>
+            <textarea type="text" rows='3' name="query1"  class="form-control" id="query1"
+               required>SELECT Filenumber,Relationname,Place,AutoMail,Year,Month,Administration,Relationcode FROM q2 WHERE Relationname = ${Relationname}</textarea>
          </div>
          <div class="col-6 offset-3 mb-3">
             <label for="query2" class="form-label">Query 2</label>
-            <textarea type="text" name="query2" class="form-control" id="query2"> </textarea>
+            <textarea type="text" rows='3' name="query2" class="form-control" id="query2"></textarea>
          </div>
          <div class="col-6 offset-3 mb-3">
             <label for="query3" class="form-label">Query 3</label>
-            <textarea type="text" name="query3" class="form-control" id="query3"> </textarea>
+            <textarea type="text" rows='3' name="query3" class="form-control" id="query3"></textarea>
          </div>
          <div class="col-6 offset-3 mb-3">
             <label for="query4" class="form-label">Query 4</label>
-            <textarea type="text" name="query4" class="form-control" id="query4"> </textarea>
+            <textarea type="text" rows='3' name="query4" class="form-control" id="query4"></textarea>
          </div>
          <div class="col-6 offset-3 mb-3">
             <label for="query5" class="form-label">Query 5</label>
-            <textarea type="text" name="query5" class="form-control" id="query5"> </textarea>
+            <textarea type="text" rows='3' name="query5" class="form-control" id="query5"></textarea>
          </div>
 
 
@@ -148,7 +91,8 @@
          <div class="row">
             <div class="col-3 offset-3 mb-3">
                <label for="uniquelevel1" class="form-label">unique level 1</label>
-               <input type="text" name="uniquelevel1" class="form-control" id="uniquelevel1">
+               <input type="text" name="uniquelevel1" class="form-control" value="test unique lvl1" id="uniquelevel1"
+                  required>
             </div>
             <div class="col-3 mb-3">
                <label for="uniquelevel2" class="form-label">unique level 2</label>
@@ -203,6 +147,8 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"></script>
+
+   <script src="../assets/js/reports.js"></script>
 </body>
 
 </html>

@@ -10,7 +10,6 @@
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
    <script src="https://kit.fontawesome.com/ade53cd309.js" crossorigin="anonymous"></script>
-
    <link rel="stylesheet" href="../assets/css/userGroup.css">
 </head>
 
@@ -21,37 +20,29 @@
 
    <main>
       <section class="container main-container">
-         <h4 class="row heading">List of User Groups</h4>
+         <h4 class="row heading">List of User Group - Report Links</h4>
          <div class="row tool-bar">
-            <a href="/view/user-group-entry" class="col-1 new"><i class="fas fa-plus"> New</i></a>
+            <a href="/view/user-group-link-entry" class="col-1 new"><i class="fas fa-plus"> New</i></a>
          </div>
          <div class="grid-header row">
-            <div class="col-1 text-center pt-2 pt-2"></div>
-            <div class="col-1 text-center pt-2 pt-2">userID</div>
-            <div class="col-1 text-center pt-2 pt-2">user Group</div>
-            <div class="col-3 text-center pt-2 pt-2">Main Theme</div>
-            <div class="col-3 text-center pt-2 pt-2">Welcome Screen</div>
+            <div class="col-1"></div>
+            <div class="col-1 text-center pt-2 pb-2">User Group</div>
+            <div class="col-3 text-center pt-2 pb-2">Report</div>
          </div>
 
          <% finalResults.forEach((res)=> { %>
             <div class="item row">
-               <div data="<%= res.UserID %>-<%= res.UserGroup %>-<%= res.MainTheme %>-<%= res.WelcomeScreen %>"
-                  class="row col-1 pt-2 pb-2">
+               <div data="<%= res.UserGroup %>-<%= res.Report %>" class="row col-1 pt-2 pb-2">
                   <a class="edit col-6 text-center edit"><i class="fas fa-edit"></i></a>
                   <div class="delete col-6 text-center delete"><i class="far fa-trash-alt"></i></div>
-               </div>
-               <div class="col-1 pt-2 pb-2 text-center">
-                  <%= res.UserID %>
                </div>
                <div class="col-1 pt-2 pb-2 text-center">
                   <%= res.UserGroup %>
                </div>
                <div class="col-3 pt-2 pb-2 text-center">
-                  <%= res.MainTheme %>
+                  <%= res.Report %>
                </div>
-               <div class="col-3 pt-2 pb-2 text-center">
-                  <%= res.WelcomeScreen %>
-               </div>
+
             </div>
             <% } ) %>
       </section>
@@ -59,7 +50,7 @@
 
    <div id="modal">
       <div class='modal-content'>
-         <p>Do you want to delete this User Group?</p>
+         <p>Do you want to delete this Link?</p>
          <div class="btn-wrapper">
             <button class='btn-yes'>Yes</button>
             <button class='btn-cancel'>Cancel</button>
@@ -71,7 +62,7 @@
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"></script>
-   <script src="../assets/js/userGroup.js"></script>
+   <script src="../assets/js/groupReportLink.js"></script>
 </body>
 
 </html>

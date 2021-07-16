@@ -1,0 +1,17 @@
+* input::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+* .success {
+  padding: .7rem 1rem;
+  background-color: #baf19c;
+  border: solid 2px #308502;
+  border-radius: 5px;
+}
+
+* .error {
+  padding: .7rem 1rem;
+  border: solid 2px #ff0d00;
+  background-color: #fec5bb;
+  border-radius: 5px;
+}

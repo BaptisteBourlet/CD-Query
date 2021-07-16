@@ -1,0 +1,54 @@
+* {
+   input::-webkit-calendar-picker-indicator {
+      opacity: 1;
+   }
+
+   .success {
+      padding: .7rem 1rem;
+      background-color: #baf19c;
+      border: solid 2px #308502;
+      border-radius: 5px;
+   }
+
+   .error {
+      padding: .7rem 1rem;
+      border: solid 2px #ff0d00;
+      background-color: #fec5bb;
+      border-radius: 5px;
+   }
+
+
+   main {
+      .row {
+         margin-right: 0;
+      }
+
+      .tool-bar {
+         height: 2.5rem;
+         background-color: white;
+         display: flex;
+         justify-content: flex-start;
+         align-items: center;
+
+         .new {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80%;
+            width: 5rem;
+            border: 2px solid #ddb892;
+            border-radius: 3px;
+            color: #ddb892;
+            margin-left: 1rem;
+         }
+      }
+   }
+}
+
+
+// ==========VARIABLES================ 
+
+
+// ============MIXINS=================
+
+

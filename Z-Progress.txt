@@ -1,0 +1,30 @@
+=======USER GROUP========
+----EDIT - finished
+----ADD  - finished
+----OVERVIEW - finished
+----DELETE - finished
+
+*UI improvement
+
+
+
+======REPORTS============
+
+----ADD      - needs validations, fields relations
+
+----EDIT     - not finished
+
+----OVERVIEW - not finished - ongoing
+
+----DELETE   - not finished
+
+
+======GROUP - REPORT=====
+
+----ADD      - finished
+
+----EDIT     - not finished
+
+----OVERVIEW - not finished - ongoing
+
+----DELETE   - not finished

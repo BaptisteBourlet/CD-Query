@@ -11,7 +11,6 @@ const client = new Client({
 
 client.connect();
 
-
 // =======================================================
 //          /api/addReport - POST
 // =======================================================
@@ -31,31 +30,96 @@ exports.addReport = async (req, res) => {
    keyStr = keyStr.slice(0, -2)
    valueStr = valueStr.slice(0, -2);
 
-   const getMaxIdQuery = {
-      text: 'SELECT MAX(id) FROM "Reports";',
-      values: []
-   }
-
    try {
-      let result = await client.query(getMaxIdQuery);
-      let nextID = result.rows[0].max + 1;
-
-      const insertQuery = {
-         text: `INSERT INTO "Reports" ("id", ${keyStr}) VALUES ($1, ${valueStr})`,
-         values: [nextID, ...Object.values(req.body)]
+      const checkQuery = {
+         text: 'SELECT "ReportName" FROM "Reports" WHERE "ReportName" = $1;',
+         values: [req.body.ReportName]
       }
 
-      client.query(insertQuery)
-         .then(response => {
-            res.status(200).send('record inserted successfully');
-         })
-         .catch(err => {
-            res.status(501).send('something wrong, please contact your IT team');
-            console.error(err)
-         })
+      let checkResult = await client.query(checkQuery);
+
+      if (checkResult.rowCount === 0) {
+         const getMaxIdQuery = {
+            text: 'SELECT MAX(id) FROM "Reports";',
+            values: []
+         }
+
+         let result = await client.query(getMaxIdQuery);
+         let nextID = result.rows[0].max + 1;
+
+         const insertQuery = {
+            text: `INSERT INTO "Reports" ("id", ${keyStr}) VALUES ($1, ${valueStr})`,
+            values: [nextID, ...Object.values(req.body)]
+         }
+
+         client.query(insertQuery)
+            .then(response => {
+               res.status(200).send('record inserted successfully');
+            })
+            .catch(err => {
+               res.status(501).send('something wrong, please contact your IT team');
+               console.error(err)
+            })
+      } else {
+         res.status(404).send('Report Name already exists!');
+      }
    } catch (err) {
       res.status(501).send('something wrong, please contact your IT team');
       console.error(err)
+   }
+}
+
+
+exports.editReport = async (req, res) => {
+   let updateStr = '';
+   let columns = Object.keys(req.body);
+   let updatedValues = Object.values(req.body);
+
+   for (let i = 0; i < columns.length; i++) {
+      updateStr += `"${columns[i]}" = $${i + 1}, `;
+   }
+
+   updateStr = updateStr.slice(0, -2);
+
+   const editQuery = {
+      text: `UPDATE "Reports" SET ${updateStr} WHERE "ReportName" = $1;`,
+      values: [...updatedValues]
+   }
+
+   try {
+      let result = await client.query(editQuery);
+
+      if (result.rowCount === 1) {
+         console.log('ok');
+         res.status(200).send('Report edited successfully');
+      } else {
+         res.status(404).send('unable to edit Report');
+      }
+   } catch (err) {
+      res.status(501).send(`request failed, please contact your IT team`);
+   }
+}
+
+
+
+exports.deleteReport = async (req, res) => {
+   const { ReportName } = req.body;
+
+   const deleteQuery = {
+      text: 'DELETE FROM "Reports" WHERE "ReportName" = $1;',
+      values: [ReportName]
+   }
+
+   try {
+      let result = await client.query(deleteQuery);
+
+      if (result.rowCount === 1) {
+         res.status(200).send(`${ReportName} deleted successfully`);
+      }
+
+   } catch (err) {
+      res.status(500).send('unable to delete Report');
+      console.log(err)
    }
 }
 
@@ -97,24 +161,75 @@ exports.addUserGroup = async (req, res) => {
 }
 
 // =======================================================
+//          /api/editUserGroup - POST
+// =======================================================
+
+
+exports.editUserGroup = async (req, res) => {
+   const { userID, userGroup, mainTheme, welcomeScreen } = req.body;
+
+   const editQuery = {
+      text: 'UPDATE "UserGroup" SET "UserGroup" = $2 WHERE "UserID" = $1 AND "MainTheme" = $3 AND "WelcomeScreen" = $4;',
+      values: [userID, userGroup, mainTheme, welcomeScreen]
+   }
+
+   let result = await client.query(editQuery);
+
+   if (result.rowCount === 1) {
+      res.status(200).send('edited successfully');
+   } else {
+      res.status(404).send('failed');
+   }
+}
+
+// =======================================================
+//          /api/deleteUserGroup - POST
+// =======================================================
+
+exports.deleteUserGroup = async (req, res) => {
+   const { UserID, UserGroup, MainTheme, WelcomeScreen } = req.body;
+
+   const deleteQuery = {
+      text: 'DELETE FROM "UserGroup" WHERE "UserID" = $1 AND "UserGroup" = $2 AND "MainTheme" = $3 AND "WelcomeScreen" = $4',
+      values: [UserID, UserGroup, MainTheme, WelcomeScreen]
+   }
+
+   let result = await client.query(deleteQuery);
+
+   res.send('the hell')
+}
+
+
+
+// =======================================================
 //          /api/addGroupReport - POST
 // =======================================================
 
 exports.addGroupReport = async (req, res) => {
-   const { userGroup, reportID } = req.body;
+   const { UserGroup, ReportID } = req.body;
 
-   const insertQuery = {
-      text: 'INSERT INTO "GroupReportLink" ("UserGroup", "Report") VALUES ($1, $2);',
-      values: [userGroup, reportID]
+   const checkQuery = {
+      text: 'SELECT * FROM "GroupReportLink" WHERE "UserGroup" = $1 AND "Report" = $2;',
+      values: [UserGroup, ReportID]
    }
 
    try {
-      let result = await client.query(insertQuery);
+      let checkResult = await client.query(checkQuery);
 
-      if (result.rowCount === 1) {
-         res.status(200).send('added to Group - Report link')
+      if (checkResult.rowCount === 0) {
+         const insertQuery = {
+            text: 'INSERT INTO "GroupReportLink" ("UserGroup", "Report") VALUES ($1, $2);',
+            values: [UserGroup, ReportID]
+         }
+         let result = await client.query(insertQuery);
+
+         if (result.rowCount === 1) {
+            res.status(200).send('added to Group - Report link')
+         } else {
+            res.status(501).send('unable to add to Group - Report link');
+         }
       } else {
-         res.status(501).send('unable to add to Group - Report link');
+         res.status(404).send('Report Link already exists');
       }
    } catch (err) {
       res.status(500).send('failed')
@@ -122,22 +237,45 @@ exports.addGroupReport = async (req, res) => {
 }
 
 
-// =======================================================
-//          /api/getuserGroup - GET
-// =======================================================
+exports.editGroupReport = async (req, res) => {
+   const { UserGroup, ReportID, oldReportID } = req.body;
 
-exports.getUserGroup = async (req, res) => {
-   const query = {
-      text: 'SELECT * FROM "UserGroup";',
-      values: [],
+   const editQuery = {
+      text: 'UPDATE "GroupReportLink" SET "Report" = $2 WHERE "UserGroup" = $1 AND "Report" = $3',
+      values: [UserGroup, ReportID, oldReportID]
    }
 
-   client.query(query)
-      .then(response => {
-         res.status(200).json(response.rows);
-      })
-      .catch(err => {
-         console.log(err);
-         res.send(`request failed, please contact your IT team`);
-      });
+   try {
+      let result = await client.query(editQuery);
+
+      if (result.rowCount === 1) {
+         res.status(200).send('Report Link edited successfully')
+      } else {
+         res.status(501).send('Unable to edit Report Link');
+      }
+   } catch (err) {
+      res.status(500).send('failed')
+   }
+}
+
+
+exports.deleteGroupReport = async (req, res) => {
+   const { UserGroup, ReportID } = req.body;
+
+   const deleteQuery = {
+      text: 'DELETE FROM "GroupReportLink" WHERE "UserGroup" = $1 AND "Report" = $2',
+      values: [UserGroup, ReportID]
+   }
+
+   try {
+      let result = await client.query(deleteQuery);
+
+      if (result.rowCount === 1) {
+         res.status(200).send('Report Link deleted successfully')
+      } else {
+         res.status(501).send('Unable to delete Report Link');
+      }
+   } catch (err) {
+      console.log(err)
+   }
 }

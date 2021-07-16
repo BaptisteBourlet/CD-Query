@@ -1,0 +1,152 @@
+* input::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+* .success {
+  padding: .7rem 1rem;
+  background-color: #baf19c;
+  border: solid 2px #308502;
+  border-radius: 5px;
+}
+
+* .error {
+  padding: .7rem 1rem;
+  border: solid 2px #ff0d00;
+  background-color: #fec5bb;
+  border-radius: 5px;
+}
+
+* main .row {
+  margin-right: 0;
+}
+
+* main .tool-bar {
+  height: 2.5rem;
+  background-color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+* main .tool-bar .new {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 80%;
+  width: 5rem;
+  border: 2px solid #ddb892;
+  border-radius: 3px;
+  color: #ddb892;
+  margin-left: 1rem;
+}
+
+body {
+  width: 100%;
+}
+
+body .heading {
+  background-color: bisque;
+  padding: 1rem 1rem;
+}
+
+body a {
+  text-decoration: none;
+  color: black;
+}
+
+body .main-container {
+  background-color: #fff7f0;
+  width: 100%;
+}
+
+body .main-container h1,
+body .main-container h2,
+body .main-container h3,
+body .main-container h4,
+body .main-container h5,
+body .main-container h6 {
+  margin-bottom: 0;
+}
+
+body .main-container .grid-header {
+  font-weight: 600;
+  border-bottom: 2px dashed #c2c2c2;
+}
+
+body .main-container .item {
+  border-bottom: 1px dashed #c2c2c2;
+}
+
+body .main-container .edit {
+  border-right: dashed 1px #c2c2c2;
+}
+
+body {
+  position: relative;
+  height: 100vh;
+}
+
+body #modal {
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.638);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+body #modal .modal-content {
+  border: none;
+  width: 20%;
+  height: 130px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+body #modal .modal-content p {
+  padding-top: 1rem;
+}
+
+body #modal .modal-content .btn-yes,
+body #modal .modal-content .btn-cancel {
+  border: none;
+  width: 100px;
+  margin: 1rem;
+  padding: .2rem 0;
+  border-radius: 5px;
+}
+
+body #modal .modal-content .btn-yes {
+  background-color: #e8343c;
+  color: white;
+}
