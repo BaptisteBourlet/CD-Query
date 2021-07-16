@@ -3,7 +3,7 @@ CD Query
 
 ### Installation
 
-*npm install*
+run `npm install`
 
 ### Run the app
 
