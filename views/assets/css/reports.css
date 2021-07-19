@@ -90,6 +90,12 @@ body a {
   color: black;
 }
 
+body #instruction {
+  font-style: italic;
+  font-size: 13px;
+  color: #808080;
+}
+
 body .main-container {
   background-color: #fff7f0;
   width: 100%;

@@ -90,7 +90,6 @@ exports.editReport = async (req, res) => {
       let result = await client.query(editQuery);
       
       if (result.rowCount === 1) {
-         console.log('ok');
          res.status(200).send('Report edited successfully');
       } else {
          res.status(404).send('unable to edit Report');
@@ -126,7 +125,6 @@ exports.deleteReport = async (req, res) => {
 
 exports.searchReport = async (req, res) => {
    const { searchText } = req.body;
-   console.log(req.body)
    const searchQuery = {
       text: 'SELECT "ReportName", "description" FROM "Reports" WHERE "ReportName" ILIKE  $1',
       values: [`%${searchText}%`]

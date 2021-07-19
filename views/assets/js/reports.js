@@ -16,45 +16,65 @@ const handleSubmit = async (event) => {
       submitData[key] = value;
    }
 
-   if (reportName) {
-   try {
-      let response = await fetch('/api/addReport', {
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         method: "POST",
-         body: JSON.stringify(submitData)
-      })
+   let allInputs = document.getElementsByTagName('input');
+   let allTextAreas = document.getElementsByTagName('textarea')
+   const allFields = [...Array.from(allInputs), ...Array.from(allTextAreas)];
+   let requiredFields = [];
 
-      document.getElementById('reportForm').classList.remove("was-validated");
+   allFields.forEach(field => {
+      if (field.hasAttribute('required')) {
+         requiredFields = [...requiredFields, field];
+      }
+   })
 
-      if (response.status === 200) {
-         Object.keys(submitData).forEach(key => {
-            document.getElementById(key).value = '';
+   const isValid = (requiredFields) => {
+      for (const field of requiredFields) {
+         if (field.value === '') {
+            return false;
+         }
+      }
+      return true;
+   }
+
+   if (isValid(requiredFields)) {
+      try {
+         let response = await fetch('/api/addReport', {
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(submitData)
          })
 
-         document.getElementById('response-message').classList.remove('error');
-         document.getElementById('response-message').classList.add('success');
-         document.getElementById('response-message').textContent = `Report ${reportName} has been added successfully`;
+         document.getElementById('reportForm').classList.remove("was-validated");
 
-         setTimeout(() => {
-            location.href = "/view/report";
-         }, 500)
+         if (response.status === 200) {
+            Object.keys(submitData).forEach(key => {
+               document.getElementById(key).value = '';
+            })
 
-      } else if (response.status === 404) {
-         document.getElementById('response-message').classList.remove('success');
-         document.getElementById('response-message').classList.add('error');
-         document.getElementById('response-message').textContent = `Report Name: ${reportName} already exists`;
-      } else {
+            document.getElementById('response-message').classList.remove('error');
+            document.getElementById('response-message').classList.add('success');
+            document.getElementById('response-message').textContent = `Report ${reportName} has been added successfully`;
+
+            setTimeout(() => {
+               location.href = "/view/report";
+            }, 500)
+
+         } else if (response.status === 404) {
+            document.getElementById('response-message').classList.remove('success');
+            document.getElementById('response-message').classList.add('error');
+            document.getElementById('response-message').textContent = `Report Name: ${reportName} already exists`;
+         } else {
+            document.getElementById('response-message').classList.remove('success');
+            document.getElementById('response-message').classList.add('error');
+            document.getElementById('response-message').textContent = `Attempt to add report failed, please contact your IT team`;
+         }
+      } catch (err) {
          document.getElementById('response-message').classList.remove('success');
          document.getElementById('response-message').classList.add('error');
          document.getElementById('response-message').textContent = `Attempt to add report failed, please contact your IT team`;
       }
-   } catch (err) {
-      document.getElementById('response-message').classList.remove('success');
-      document.getElementById('response-message').classList.add('error');
-      document.getElementById('response-message').textContent = `Attempt to add report failed, please contact your IT team`;
-   }
    } else {
       window.scrollTo(0, 0);
       document.getElementById('response-message').textContent = '';
@@ -75,7 +95,27 @@ const handleEditSubmit = async (event) => {
       submitData[key] = value;
    }
 
-   if (reportName) {
+   let allInputs = document.getElementsByTagName('input');
+   let allTextAreas = document.getElementsByTagName('textarea')
+   const allFields = [...Array.from(allInputs), ...Array.from(allTextAreas)];
+   let requiredFields = [];
+
+   allFields.forEach(field => {
+      if (field.hasAttribute('required')) {
+         requiredFields = [...requiredFields, field];
+      }
+   })
+
+   const isValid = (requiredFields) => {
+      for (const field of requiredFields) {
+         if (field.value === '') {
+            return false;
+         }
+      }
+      return true;
+   }
+
+   if (isValid(requiredFields)) {
       try {
          let response = await fetch('/api/editReport', {
             headers: {
@@ -200,12 +240,16 @@ const handleDropdown2 = (event) => {
    let dropdown2value = document.getElementById('dropdown2value');
    if (event.target.value !== "") {
       dropdown2value.required = true;
+   } else {
+      dropdown2value.required = false;
    }
 }
 const handleDropdown3 = (event) => {
    let dropdown3value = document.getElementById('dropdown3value');
    if (event.target.value !== "") {
       dropdown3value.required = true;
+   } else {
+      dropdown3value.required = false;
    }
 }
 
@@ -216,6 +260,9 @@ const handleQuery2 = (event) => {
    if (event.target.value !== "") {
       uniquelevel2.required = true;
       drillcolumnlevel1.required = true;
+   } else {
+      uniquelevel2.required = false;
+      drillcolumnlevel1.required = false;
    }
 }
 
@@ -226,6 +273,9 @@ const handleQuery3 = (event) => {
    if (event.target.value !== "") {
       uniquelevel3.required = true;
       drillcolumnlevel2.required = true;
+   } else {
+      uniquelevel3.required = false;
+      drillcolumnlevel2.required = false;
    }
 }
 const handleQuery4 = (event) => {
@@ -235,6 +285,9 @@ const handleQuery4 = (event) => {
    if (event.target.value !== "") {
       uniquelevel4.required = true;
       drillcolumnlevel3.required = true;
+   } else {
+      uniquelevel4.required = false;
+      drillcolumnlevel3.required = false;
    }
 }
 const handleQuery5 = (event) => {
@@ -244,5 +297,8 @@ const handleQuery5 = (event) => {
    if (event.target.value !== "") {
       uniquelevel5.required = true;
       drillcolumnlevel4.required = true;
+   } else {
+      uniquelevel5.required = false;
+      drillcolumnlevel4.required = false;
    }
 }
